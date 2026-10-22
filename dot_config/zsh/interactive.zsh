@@ -16,7 +16,7 @@ zstyle ':omz:update' mode reminder
 zstyle ':omz:update' frequency 14
 zstyle ':omz:plugins:nvm' lazy yes
 # Loading nvm before Neovim exposes npm to Mason and language servers.
-zstyle ':omz:plugins:nvm' lazy-cmd nvim
+zstyle ':omz:plugins:nvm' lazy-cmd nvim codex
 
 CASE_SENSITIVE="false"
 HYPHEN_INSENSITIVE="true"
