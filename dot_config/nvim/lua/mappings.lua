@@ -58,3 +58,6 @@ end, { desc = "git toggle inline blame" })
 map("n", "<leader>gB", function()
   require("gitsigns").blame_line { full = true }
 end, { desc = "git blame line (full)" })
+
+-- The prompt is passed to rg as arguments: "foo" -g *.lua, -F a.b, etc.
+map("n", "<leader>fg", "<cmd>Telescope live_grep_args<cr>", { desc = "telescope live grep args" })
