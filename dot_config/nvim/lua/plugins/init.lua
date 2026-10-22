@@ -6,6 +6,19 @@ return {
   },
 
   {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      { "nvim-telescope/telescope-live-grep-args.nvim", version = "^1.0.0" },
+    },
+    -- NvChad's extensions_list is never read, so extensions load here.
+    config = function(_, opts)
+      local telescope = require "telescope"
+      telescope.setup(opts)
+      telescope.load_extension "live_grep_args"
+    end,
+  },
+
+  {
     "neovim/nvim-lspconfig",
     dependencies = { "b0o/SchemaStore.nvim" },
     config = function()

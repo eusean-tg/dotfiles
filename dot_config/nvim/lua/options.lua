@@ -9,7 +9,8 @@ o.cursorlineopt = "both" -- highlight the line AND the number
 -- ── Scrolling / view ───────────────────────────────────────────
 o.scrolloff = 8 -- keep 8 lines of context above/below
 o.sidescrolloff = 8
-o.wrap = false
+o.wrap = true
+o.linebreak = true
 
 -- ── Indentation (NvChad sets 2-space default; these round it out) ─
 o.smartindent = true
