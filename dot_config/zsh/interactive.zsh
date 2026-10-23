@@ -11,6 +11,16 @@ export NVM_DIR="$HOME/.nvm"
 export BUN_INSTALL="$HOME/.bun"
 typeset -U path PATH
 path=("$BUN_INSTALL/bin" "$HOME/.local/bin" $path)
+# Lazy nvm keeps node off PATH until first use, which hides node, npm and pnpm
+# from make and other non-zsh children. The default alias's bin dir goes on
+# PATH up front; loading nvm later swaps in its own entry.
+() {
+  local v=default
+  local -i hops
+  while (( hops++ < 5 )) && [[ -r $NVM_DIR/alias/$v ]]; do v=$(<"$NVM_DIR/alias/$v"); done
+  local -a bins=("$NVM_DIR"/versions/node/v${v#v}(|.*)/bin(N/n))
+  (( $#bins )) && path=("$bins[-1]" $path)
+}
 
 zstyle ':omz:update' mode reminder
 zstyle ':omz:update' frequency 14
