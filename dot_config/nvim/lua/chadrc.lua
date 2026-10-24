@@ -23,6 +23,16 @@ M.ui = {
   statusline = {
     theme = "default", -- default | vscode | vscode_colored | minimal
     separator_style = "default",
+    modules = {
+      -- Path relative to the cwd, or to ~ outside it, instead of the bare file name.
+      file = function()
+        local utils = require "nvchad.stl.utils"
+        local icon = utils.file()[1]
+        local path = vim.api.nvim_buf_get_name(utils.stbufnr())
+        local name = path == "" and "Empty" or vim.fn.fnamemodify(path, ":~:.")
+        return "%#St_file# " .. icon .. " " .. name .. " %#St_file_sep#" .. utils.separators.default.right
+      end,
+    },
   },
 
   tabufline = {
