@@ -125,34 +125,4 @@ return {
       },
     },
   },
-  {
-    "mistweaverco/kulala.nvim",
-    ft = { "http", "rest" },
-    keys = {
-      { "<leader>Rs", desc = "Send request" },
-      { "<leader>Ra", desc = "Send all requests" },
-      { "<leader>Rb", desc = "Open scratchpad" },
-    },
-    opts = {
-      default_env = "dev",
-      global_keymaps = true,
-      kulala_keymaps_prefix = "<leader>R",
-      kulala_keymaps = {
-        ["Next tab"] = {
-          "<Tab>",
-          function()
-            require("kulala.ui").show_next_tab()
-          end,
-          prefix = false,
-        },
-        ["Previous tab"] = {
-          "<S-Tab>",
-          function()
-            require("kulala.ui").show_previous_tab()
-          end,
-          prefix = false,
-        },
-      },
-    },
-  },
 }
