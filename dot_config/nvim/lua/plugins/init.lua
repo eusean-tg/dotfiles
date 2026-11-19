@@ -25,6 +25,33 @@ return {
       require "configs.lspconfig"
     end,
   },
+
+  -- Installs any missing Mason package on startup. Homebrew supplies gopls,
+  -- golangci-lint and the formatters, so they stay off this list: NvChad puts
+  -- Mason's bin first on PATH, and a Mason copy would shadow the Homebrew one.
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "mason-org/mason.nvim" },
+    event = "VeryLazy",
+    opts = {
+      ensure_installed = {
+        "css-lsp",
+        "html-lsp",
+        "json-lsp",
+        "lua-language-server",
+        "prettier",
+        "vtsls",
+      },
+    },
+    -- The plugin starts its check on VimEnter, which has already fired by the
+    -- time VeryLazy loads it, so the check starts here instead.
+    config = function(_, opts)
+      local installer = require "mason-tool-installer"
+      installer.setup(opts)
+      installer.run_on_start()
+    end,
+  },
+
   {
     "rmagatti/auto-session",
     lazy = false,
