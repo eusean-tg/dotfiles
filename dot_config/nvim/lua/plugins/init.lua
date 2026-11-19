@@ -26,9 +26,10 @@ return {
     end,
   },
 
-  -- Installs any missing Mason package on startup. Homebrew supplies gopls,
-  -- golangci-lint and the formatters, so they stay off this list: NvChad puts
-  -- Mason's bin first on PATH, and a Mason copy would shadow the Homebrew one.
+  -- Installs any missing Mason package on startup. golangci-lint and SQLFluff
+  -- stay with the system package manager instead: golangci-lint has to match
+  -- the version CI runs, and NvChad puts Mason's bin first on PATH, so a Mason
+  -- copy would shadow it.
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     dependencies = { "mason-org/mason.nvim" },
@@ -36,10 +37,15 @@ return {
     opts = {
       ensure_installed = {
         "css-lsp",
+        "gofumpt",
+        "goimports",
+        "gopls",
         "html-lsp",
         "json-lsp",
         "lua-language-server",
         "prettier",
+        "shfmt",
+        "stylua",
         "vtsls",
       },
     },
