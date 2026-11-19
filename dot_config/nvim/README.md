@@ -8,18 +8,20 @@ uses the `main` branch of nvim-treesitter. Plugin revisions are recorded in
 
 Apply the dotfiles configuration and install the prerequisites in the
 [installation guide](https://github.com/eusean-tg/dotfiles#installation).
+`chezmoi apply` installs the plugin revisions recorded in `lazy-lock.json`.
 Open Neovim and run:
 
 ```vim
-:Lazy restore
 :TSInstallAll
-:MasonInstall lua-language-server stylua html-lsp css-lsp json-lsp gopls goimports gofumpt prettier shfmt
 ```
 
-`:Lazy restore` installs the locked plugin revisions. `:TSInstallAll` installs
-the parsers listed in `lua/plugins/init.lua`; parser compilation requires the
-tree-sitter CLI and a C/C++ compiler. Mason installs external language servers
-and formatters. Use `:Mason` to inspect their installation status.
+`:TSInstallAll` installs the parsers listed in `lua/plugins/init.lua`; parser
+compilation requires the tree-sitter CLI and a C/C++ compiler.
+
+On startup, mason-tool-installer installs any missing package from the
+`ensure_installed` list in `lua/plugins/init.lua`: the language servers and
+formatters other than SQLFluff and golangci-lint. The first launch on a new
+machine downloads all of them. Use `:Mason` to inspect their installation status.
 
 Install SQLFluff (`sqlfluff`) for SQL formatting and diagnostics and golangci-lint for Go
 linting through the system package manager or their upstream installers. These
@@ -66,7 +68,7 @@ spacing_before = align
 align_within = create_table_statement
 ```
 
-Language-server configuration includes Go, JSON, HTML, and CSS. JSON schemas
+Language servers cover Go, TypeScript and JavaScript, JSON, HTML, CSS, and Lua. JSON schemas
 come from SchemaStore. Go linting runs golangci-lint after writes. Treesitter
 supplies folds; an attached language server with folding support supplies its
 folding ranges. Files open with folds expanded.
@@ -82,7 +84,6 @@ dashboard, automatic session management, inline Git blame, and a scrollbar.
 | `<leader>gb` | Toggle inline Git blame |
 | `<leader>gB` | Show full blame information for the line |
 | `<leader>ld` | Show a diagnostic popup |
-| `<leader>Rs` | Send an HTTP request from an HTTP/REST buffer |
 | `<leader>s` in visual mode | Start a substitution restricted by the visual selection |
 | `<C-s>` | Save the file |
 | `<C-h/j/k/l>` | Move between windows |
@@ -107,7 +108,7 @@ require its final character to be inside the selection too. See `:help /\%V`.
 
 | File | Purpose |
 | --- | --- |
-| `lua/plugins/init.lua` | Plugin declarations and Treesitter parser list |
+| `lua/plugins/init.lua` | Plugin declarations, Treesitter parser list, and Mason package list |
 | `lua/configs/conform.lua` | Formatters and Go/SQL format-on-save policy |
 | `lua/configs/lspconfig.lua` | Language servers and JSON schemas |
 | `lua/configs/lint.lua` | Go and PostgreSQL linting |
@@ -115,13 +116,15 @@ require its final character to be inside the selection too. See `:help /\%V`.
 | `lua/options.lua` | Editing and display options |
 | `lua/autocmds.lua` | Parser installation command, JSONC detection, and LSP folds |
 | `lua/chadrc.lua` | Theme, dashboard, and UI settings |
-| `lazy-lock.json` | Plugin revision lockfile |
+| `lazy-lock.json` | Plugin revision lockfile; a symlink into the chezmoi source |
 
 Edit with `chezmoi edit ~/.config/nvim/lua/plugins/init.lua`, review with
 `chezmoi diff`, and run `chezmoi apply`. Capture direct edits to managed files
 with `chezmoi re-add ~/.config/nvim` before committing. Register additional
 configuration files with `chezmoi add <path>`.
 
-After a plugin update, capture the lockfile with
-`chezmoi re-add ~/.config/nvim/lazy-lock.json` and commit it. Other installations
-can pull, apply, and run `:Lazy restore` to use those revisions.
+`~/.config/nvim/lazy-lock.json` is a symlink to `dot_config/nvim/.lazy-lock.json`
+in the chezmoi source, so `:Lazy update` writes new revisions directly into the
+repository. Review them with `chezmoi git -- diff` and commit. `chezmoi apply`
+runs `:Lazy restore` whenever the lockfile changes, so other installations move
+to the committed revisions on their next pull and apply.

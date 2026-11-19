@@ -4,7 +4,7 @@
 
 - Zsh with Oh My Zsh, Powerlevel10k, completions, autosuggestions, and syntax highlighting.
 - tmux with mouse support, Vim-style pane navigation, and session persistence.
-- Neovim with NvChad, language servers, formatters, Git integration, and HTTP tooling.
+- Neovim with NvChad, language servers, formatters, and Git integration.
 
 ## Requirements
 
@@ -127,9 +127,9 @@ chezmoi apply
 Capture and commit local changes before pulling. If branches diverge, merge or
 rebase in the source directory and resolve conflicts before applying.
 
-Neovim's `lazy-lock.json` records plugin versions. After updating plugins, run
-`chezmoi re-add ~/.config/nvim/lazy-lock.json` and commit the result. After pulling
-and applying that lockfile elsewhere, run `:Lazy restore` in Neovim.
+Neovim's `lazy-lock.json` records plugin versions. It is a symlink into the source
+directory, so updating plugins changes the source file directly; commit it with
+the rest. `chezmoi apply` runs `:Lazy restore` whenever the lockfile changes.
 
 Shell and tmux plugin clones have their own version control. Update them with
 their Git or plugin-manager commands; rerunning the bootstrap script preserves
