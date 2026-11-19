@@ -43,5 +43,5 @@ vim.lsp.config("jsonls", {
   },
 })
 
-local servers = { "html", "cssls", "gopls", "jsonls" }
+local servers = { "html", "cssls", "gopls", "jsonls", "vtsls" }
 vim.lsp.enable(servers)
