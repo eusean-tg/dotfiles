@@ -48,7 +48,6 @@ return {
         "stylua",
         "vtsls",
         "terraform-ls",
-        "terragrunt-ls",
         "helm-ls",
         "yaml-language-server",
         "bash-language-server",

@@ -75,7 +75,6 @@ local servers = {
   "jsonls",
   "vtsls",
   "terraformls",
-  "terragrunt_ls",
   "helm_ls",
   "yamlls",
   "bashls",
