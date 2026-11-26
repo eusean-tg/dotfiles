@@ -2,6 +2,37 @@ require "nvchad.options"
 
 local o = vim.o
 
+-- ── Clipboard without a display (SSH, detached multiplexers) ───
+-- With no X11/Wayland display Nvim finds no clipboard tool, and NvChad's
+-- clipboard=unnamedplus disables the automatic OSC 52 fallback. Yanks go
+-- through OSC 52 so the outer terminal sets its local clipboard. Pastes read
+-- Nvim's own register, since most terminals block or prompt on OSC 52 reads;
+-- paste from the system clipboard with the terminal's paste key.
+-- macOS uses pbcopy, so it is left alone.
+if vim.fn.has "mac" == 0 and (vim.env.DISPLAY or "") == "" and (vim.env.WAYLAND_DISPLAY or "") == "" then
+  local osc52 = require "vim.ui.clipboard.osc52"
+  local function paste()
+    return { vim.fn.split(vim.fn.getreg "", "\n"), vim.fn.getregtype "" }
+  end
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = { ["+"] = osc52.copy "+", ["*"] = osc52.copy "*" },
+    paste = { ["+"] = paste, ["*"] = paste },
+  }
+end
+
+local function in_chart(path)
+  return vim.fs.root(path, "Chart.yaml") ~= nil
+end
+
+vim.filetype.add({
+  pattern = {
+    [".*/templates/.*%.ya?ml"] = function(path) return in_chart(path) and "helm" or nil end,
+    [".*/templates/.*%.tpl"] = "helm",
+    [".*/values[^/]*%.ya?ml"] = function(path) return in_chart(path) and "yaml.helm-values" or nil end,
+  },
+})
+
 -- ── Line numbers & cursor ──────────────────────────────────────
 o.relativenumber = true -- relative numbers make 5j / 12k natural
 o.cursorlineopt = "both" -- highlight the line AND the number

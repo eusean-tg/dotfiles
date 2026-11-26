@@ -25,6 +25,43 @@ return {
       require "configs.lspconfig"
     end,
   },
+
+  -- Installs any missing Mason package on startup. golangci-lint and SQLFluff
+  -- stay with the system package manager instead: golangci-lint has to match
+  -- the version CI runs, and NvChad puts Mason's bin first on PATH, so a Mason
+  -- copy would shadow it.
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "mason-org/mason.nvim" },
+    event = "VeryLazy",
+    opts = {
+      ensure_installed = {
+        "css-lsp",
+        "gofumpt",
+        "goimports",
+        "gopls",
+        "html-lsp",
+        "json-lsp",
+        "lua-language-server",
+        "prettier",
+        "shfmt",
+        "stylua",
+        "vtsls",
+        "terraform-ls",
+        "helm-ls",
+        "yaml-language-server",
+        "bash-language-server",
+      },
+    },
+    -- The plugin starts its check on VimEnter, which has already fired by the
+    -- time VeryLazy loads it, so the check starts here instead.
+    config = function(_, opts)
+      local installer = require "mason-tool-installer"
+      installer.setup(opts)
+      installer.run_on_start()
+    end,
+  },
+
   {
     "rmagatti/auto-session",
     lazy = false,
@@ -73,6 +110,9 @@ return {
         "gitcommit",
         "gitignore",
         "sql",
+        "hcl",
+        "terraform",
+        "helm",
       })
       opts.ensure_installed = vim.fn.uniq(vim.fn.sort(opts.ensure_installed))
     end,

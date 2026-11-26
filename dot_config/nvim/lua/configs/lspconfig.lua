@@ -43,5 +43,40 @@ vim.lsp.config("jsonls", {
   },
 })
 
-local servers = { "html", "cssls", "gopls", "jsonls" }
+vim.lsp.config("vtsls", {
+  settings = {
+    typescript = {
+      tsserver = {
+        -- vtsls caps tsserver's heap at 3 GB. kiyotaka-frontend needs more:
+        -- tsserver aborts at the cap and vtsls restarts it in a loop, so no
+        -- diagnostics or navigation ever arrive. 8 GB matches the heap that
+        -- project's own typecheck script sets. V8 takes only what it uses,
+        -- so smaller projects are unaffected.
+        maxTsServerMemory = 8192,
+      },
+    },
+  },
+})
+
+vim.lsp.config("yamlls", {
+  settings = {
+    yaml = {
+      -- Use SchemaStore.nvim's catalog instead of yamlls fetching schemastore.org itself.
+      schemaStore = { enable = false, url = "" },
+      schemas = require("schemastore").yaml.schemas(),
+    },
+  },
+})
+
+local servers = {
+  "html",
+  "cssls",
+  "gopls",
+  "jsonls",
+  "vtsls",
+  "terraformls",
+  "helm_ls",
+  "yamlls",
+  "bashls",
+}
 vim.lsp.enable(servers)
