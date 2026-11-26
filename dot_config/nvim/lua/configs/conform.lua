@@ -20,6 +20,8 @@ local options = {
     hcl = { "terragrunt_hclfmt" }, -- terragrunt.hcl / root.hcl: terragrunt hcl fmt
   },
 
+  default_format_opts = { timeout_ms = 10000 },
+
   formatters = {
     sqlfluff = {
       -- Keep fixes even when unfixable violations remain; nvim-lint reports them.
