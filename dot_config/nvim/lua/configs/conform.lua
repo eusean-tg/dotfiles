@@ -16,6 +16,8 @@ local options = {
     typescriptreact = { "prettier" },
     sh = { "shfmt" },
     bash = { "shfmt" },
+    terraform = { "terraform_fmt" }, -- .tf modules: terraform fmt
+    hcl = { "terragrunt_hclfmt" }, -- terragrunt.hcl / root.hcl: terragrunt hcl fmt
   },
 
   formatters = {
