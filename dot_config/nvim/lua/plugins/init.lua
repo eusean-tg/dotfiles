@@ -47,6 +47,11 @@ return {
         "shfmt",
         "stylua",
         "vtsls",
+        "terraform-ls",
+        "terragrunt-ls",
+        "helm-ls",
+        "yaml-language-server",
+        "bash-language-server",
       },
     },
     -- The plugin starts its check on VimEnter, which has already fired by the
@@ -106,6 +111,9 @@ return {
         "gitcommit",
         "gitignore",
         "sql",
+        "hcl",
+        "terraform",
+        "helm",
       })
       opts.ensure_installed = vim.fn.uniq(vim.fn.sort(opts.ensure_installed))
     end,

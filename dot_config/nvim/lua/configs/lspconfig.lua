@@ -58,5 +58,26 @@ vim.lsp.config("vtsls", {
   },
 })
 
-local servers = { "html", "cssls", "gopls", "jsonls", "vtsls" }
+vim.lsp.config("yamlls", {
+  settings = {
+    yaml = {
+      -- Use SchemaStore.nvim's catalog instead of yamlls fetching schemastore.org itself.
+      schemaStore = { enable = false, url = "" },
+      schemas = require("schemastore").yaml.schemas(),
+    },
+  },
+})
+
+local servers = {
+  "html",
+  "cssls",
+  "gopls",
+  "jsonls",
+  "vtsls",
+  "terraformls",
+  "terragrunt_ls",
+  "helm_ls",
+  "yamlls",
+  "bashls",
+}
 vim.lsp.enable(servers)

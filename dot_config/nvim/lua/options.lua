@@ -21,6 +21,18 @@ if vim.fn.has "mac" == 0 and (vim.env.DISPLAY or "") == "" and (vim.env.WAYLAND_
   }
 end
 
+local function in_chart(path)
+  return vim.fs.root(path, "Chart.yaml") ~= nil
+end
+
+vim.filetype.add({
+  pattern = {
+    [".*/templates/.*%.ya?ml"] = function(path) return in_chart(path) and "helm" or nil end,
+    [".*/templates/.*%.tpl"] = "helm",
+    [".*/values[^/]*%.ya?ml"] = function(path) return in_chart(path) and "yaml.helm-values" or nil end,
+  },
+})
+
 -- ── Line numbers & cursor ──────────────────────────────────────
 o.relativenumber = true -- relative numbers make 5j / 12k natural
 o.cursorlineopt = "both" -- highlight the line AND the number
